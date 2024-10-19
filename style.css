@@ -1,0 +1,57 @@
+/* General page settings */
+body {
+    background-color: #f7f9fc; /* Light background for the page */
+    font-family: 'Arial', sans-serif;
+}
+
+h1 {
+    color: #343a40; /* Dark gray for the header text */
+    font-weight: bold;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #495057;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    padding: 0.75rem;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #007bff; /* Bootstrap primary blue color */
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Section for the form container */
+form {
+    background-color: #ffffff; /* White background for the form */
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-top: 5rem;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    form {
+        width: 100%;
+        padding: 1.5rem;
+    }
+}
