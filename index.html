@@ -16,16 +16,18 @@
 <section>
     <!-- You can use the <form> for authentication if you want -->
     <!-- Form was written by: Joshua Ferrell -->
-    <form class="w-50 mx-auto">
+    <form id="shopperForm" class="w-50 mx-auto">
         <h1 class="text-center mb-4">Shopper Management Web Page</h1>
 
         <div class="form-group">
             <label for="email" class="form-label">Shopper Email Address</label>
             <input type="text" class="form-control" id="email" name="email" placeholder="Email">
+            <small id="emailError" class="text-danger d-none">Please enter a valid email.</small>
         </div>
         <div class="form-group">
             <label for="name" class="form-label">Shopper Name</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+            <small id="nameError" class="text-danger d-none">Name is required.</small>
         </div>
         <div class="form-group">
             <label for="phonenumber" class="form-label">Shopper Phone Number</label>
@@ -34,15 +36,87 @@
         <div class="form-group">
             <label for="age" class="form-label">Shopper Age</label>
             <input type="text" class="form-control" id="age" name="age" placeholder="Age">
+            <small id="ageError" class="text-danger d-none">Please enter a valid age.</small>
         </div>
         <div class="form-group">
             <label for="address" class="form-label">Shopper Address</label>
             <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+            <small id="addressError" class="text-danger d-none">Address is required.</small>
         </div>
 
-        <button type="Sign Up">Sign Up</button>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>
+
+    <!-- JSON output will be displayed here -->
+    <div id="jsonOutput" class="mt-4"></div>
 </section>
+
+<!-- JavaScript for validation and JSON output: Andy -->
+<script>
+    document.getElementById('shopperForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission and page reload
+
+        // Clear any previous error messages
+        const emailError = document.getElementById('emailError');
+        const nameError = document.getElementById('nameError');
+        const ageError = document.getElementById('ageError');
+        const addressError = document.getElementById('addressError');
+        emailError.classList.add('d-none');
+        nameError.classList.add('d-none');
+        ageError.classList.add('d-none');
+        addressError.classList.add('d-none');
+
+        // Get form data
+        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phonenumber').value;
+        const age = document.getElementById('age').value;
+        const address = document.getElementById('address').value;
+
+        let isValid = true;
+
+        // Validate email
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            emailError.classList.remove('d-none');
+            isValid = false;
+        }
+
+        // Validate name
+        if (name.trim() === '') {
+            nameError.classList.remove('d-none');
+            isValid = false;
+        }
+
+        // Validate age
+        if (age <= 0) {
+            ageError.classList.remove('d-none');
+            isValid = false;
+        }
+
+        // Validate address
+        if (address.trim() === '') {
+            addressError.classList.remove('d-none');
+            isValid = false;
+        }
+
+        // If form is valid, create and display JSON
+        if (isValid) {
+            // Create a JSON object
+            const shopperData = {
+                "email": email,
+                "name": name,
+                "phone": phone || "N/A", // Optional field
+                "age": age,
+                "address": address
+            };
+
+            // Display JSON on the page
+            document.getElementById('jsonOutput').innerHTML =
+                `<pre>${JSON.stringify(shopperData, null, 2)}</pre>`;
+        }
+    });
+</script>
 
 <!-- Bootstrap JS (Optional, for added functionality) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
