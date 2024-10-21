@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomePage - InsertCompanyHere</title>
+    <title>HomePage - Andy's Assortment Of Acquired Articles</title>
 
     <!-- Bootstrap CSS (CDN) -->
     <!-- Bootstrap and CSS was done by Thierry Duperval-->
@@ -31,11 +31,11 @@
         </div>
         <div class="form-group">
             <label for="phonenumber" class="form-label">Shopper Phone Number</label>
-            <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="Phone Number">
+            <input type="tel" class="form-control" id="phonenumber" name="phonenumber" placeholder="Phone Number">
         </div>
         <div class="form-group">
             <label for="age" class="form-label">Shopper Age</label>
-            <input type="text" class="form-control" id="age" name="age" placeholder="Age">
+            <input type="number" class="form-control" id="age" name="age" placeholder="Age">
             <small id="ageError" class="text-danger d-none">Please enter a valid age.</small>
         </div>
         <div class="form-group">
@@ -54,73 +54,82 @@
 <!-- JavaScript for validation and JSON output: Andy -->
 <script>
     document.getElementById('shopperForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent form submission and page reload
+        // Prevent form submission and page reload
+        event.preventDefault();
 
-        // Clear any previous error messages
-        const emailError = document.getElementById('emailError');
-        const nameError = document.getElementById('nameError');
-        const ageError = document.getElementById('ageError');
-        const addressError = document.getElementById('addressError');
-        emailError.classList.add('d-none');
-        nameError.classList.add('d-none');
-        ageError.classList.add('d-none');
-        addressError.classList.add('d-none');
+            // Clear any previous error messages and red borders
+            const emailInput = document.getElementById('email');
+            const nameInput = document.getElementById('name');
+            const ageInput = document.getElementById('age');
+            const addressInput = document.getElementById('address');
 
-        // Get form data
-        const email = document.getElementById('email').value;
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phonenumber').value;
-        const age = document.getElementById('age').value;
-        const address = document.getElementById('address').value;
+            const emailError = document.getElementById('emailError');
+            const nameError = document.getElementById('nameError');
+            const ageError = document.getElementById('ageError');
+            const addressError = document.getElementById('addressError');
 
-        let isValid = true;
+            emailError.classList.add('d-none');
+            nameError.classList.add('d-none');
+            ageError.classList.add('d-none');
+            addressError.classList.add('d-none');
 
-        // Validate email
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            emailError.classList.remove('d-none');
-            isValid = false;
-        }
+            emailInput.classList.remove('invalid-input');
+            nameInput.classList.remove('invalid-input');
+            ageInput.classList.remove('invalid-input');
+            addressInput.classList.remove('invalid-input');
 
-        // Validate name
-        if (name.trim() === '') {
-            nameError.classList.remove('d-none');
-            isValid = false;
-        }
+            // Get form data
+            const email = emailInput.value;
+            const name = nameInput.value;
+            const phone = document.getElementById('phonenumber').value;
+            const age = ageInput.value;
+            const address = addressInput.value;
 
-        // Validate age
-        if (age <= 0) {
-            ageError.classList.remove('d-none');
-            isValid = false;
-        }
+            let isValid = true;
 
-        // Validate address
-        if (address.trim() === '') {
-            addressError.classList.remove('d-none');
-            isValid = false;
-        }
+            // Validate email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                emailError.classList.remove('d-none');
+                emailInput.classList.add('invalid-input');
+                isValid = false;
+            }
 
-        // If form is valid, create and display JSON
-        if (isValid) {
-            // Create a JSON object
-            const shopperData = {
-                "email": email,
-                "name": name,
-                "phone": phone || "N/A", // Optional field
-                "age": age,
-                "address": address
-            };
+            // Validate name
+            if (name.trim() === '') {
+                nameError.classList.remove('d-none');
+                nameInput.classList.add('invalid-input');
+                isValid = false;
+            }
 
-            // Display JSON on the page
-            document.getElementById('jsonOutput').innerHTML =
-                `<pre>${JSON.stringify(shopperData, null, 2)}</pre>`;
-        }
-    });
+            // Validate age
+            if (age <= 0) {
+                ageError.classList.remove('d-none');
+                ageInput.classList.add('invalid-input');
+                isValid = false;
+            }
+
+            // Validate address
+            if (address.trim() === '') {
+                addressError.classList.remove('d-none');
+                addressInput.classList.add('invalid-input');
+                isValid = false;
+            }
+
+            // If form is valid, create and display JSON
+            if (isValid) {
+                // Create a JSON object
+                const shopperData = {
+                    "email": email,
+                    "name": name,
+                    "phone": phone || "N/A",
+                    "age": age,
+                    "address": address
+                };
+                // Display JSON on the page
+                document.getElementById('jsonOutput').innerHTML = `<pre>${JSON.stringify(shopperData, null, 2)}</pre>`;
+            }
+        });
 </script>
-
-<!-- Bootstrap JS (Optional, for added functionality) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
