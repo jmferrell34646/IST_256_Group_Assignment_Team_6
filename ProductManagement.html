@@ -56,8 +56,39 @@
         <input type="number" class="form-control" id="productWeight" name="productWeight" placeholder="productWeight">
     </div>
 
+    <div>
+        <button type="button" onclick="saveProduct()">Save</button>
+    </div>
+
 
 </form>
+
+<script>
+    //Stores the products
+     products = [];
+
+    function saveProduct() {
+        // Get values from form
+        const product = {
+            id: document.getElementById('productID').value,
+            description: document.getElementById('productDescription').value,
+            category: document.getElementById('productCategory').value,
+            measure: document.getElementById('productMeasure').value,
+            price: document.getElementById('productPrice').value,
+            weight: document.getElementById('productWeight').value
+        };
+
+        // Add product to the array
+        products.push(product);
+
+        // Clear form
+        document.getElementById("productForm").reset();
+
+        alert("Product saved!");
+        //Use this to check to see if the products were logged successfully
+        console.log(products);
+    }
+</script>
 
 </body>
 </html>
