@@ -6,10 +6,9 @@
 
     <link rel="stylesheet" href="style.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
-<!-- Form body was made by Joshua Ferrell-->
+<!-- Form body was made by Joshua Ferrell -->
 <form id="productForm" class="w-50 mx-auto">
     <h1 class="text-center mb-4">Product Management Web Page</h1>
 
@@ -37,13 +36,13 @@
 
     <div class="form-group">
         <label for="productMeasure" class="form-label">Product Unit Of Measure</label>
-        <select type="text" class="form-control" id="productMeasure" name="productMeasure" placeholder="productMeasure">
-            <option value="">Select Category</option>
+        <select class="form-control" id="productMeasure" name="productMeasure">
+            <option value="">Select Measure</option>
             <option value="Clothing">Clothing</option>
             <option value="Recreational">Recreational</option>
-            <option value="Literature Related">Pants</option>
-            <option value="Decoration">Shirt</option>
-            <option value="Work Gear">Footwear</option>
+            <option value="Literature Related">Literature Related</option>
+            <option value="Decoration">Decoration</option>
+            <option value="Work Gear">Work Gear</option>
         </select>
     </div>
 
@@ -61,14 +60,15 @@
         <button type="button" onclick="saveProduct()">Save</button>
     </div>
 
-
+    <!-- JSON Output Section - Andy Wang -->
+    <div id="jsonOutput" class="mt-4"></div>
 </form>
 
 <script>
-    //Stores the products
-     products = [];
+    // Stores the products
+    let products = [];
 
-     //saveProduct function was created by Joshua Ferrell
+    // saveProduct function was created by Joshua Ferrell
     function saveProduct() {
         // Get values from form
         const product = {
@@ -77,7 +77,7 @@
             category: document.getElementById('productCategory').value,
             measure: document.getElementById('productMeasure').value,
             price: document.getElementById('productPrice').value,
-            weight: document.getElementById('productWeight').value
+            weight: document.getElementById('productWeight').value || "N/A"
         };
 
         // Add product to the array
@@ -86,8 +86,11 @@
         // Clear form
         document.getElementById("productForm").reset();
 
+        // Display JSON on the page - Assigned to Andy Wang
+        document.getElementById('jsonOutput').innerHTML = `<pre>${JSON.stringify(product, null, 2)}</pre>`;
+
         alert("Product saved!");
-        //Use this to check to see if the products were logged successfully
+        // Use this to check to see if the products were logged successfully
         console.log(products);
     }
 </script>
