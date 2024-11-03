@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Management</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Form body was made by Joshua Ferrell -->
+<form id="productForm" class="w-50 mx-auto">
+  <h1 class="text-center mb-4">Product Management Web Page</h1>
+
+  <div class="form-group">
+    <label for="productID" class="form-label">Product ID</label>
+    <input type="number" class="form-control" id="productID" name="productID" placeholder="Product ID">
+  </div>
+
+  <div class="form-group">
+    <label for="productDescription" class="form-label">Product Description</label>
+    <input type="text" class="form-control" id="productDescription" name="productDescription" placeholder="Product Description">
+  </div>
+
+  <div class="form-group">
+    <label for="productCategory" class="form-label">Product Category</label>
+    <select class="form-control" id="productCategory" name="productCategory">
+      <option value="">Select Category</option>
+      <option value="Mint Condition">Mint Condition</option>
+      <option value="Minimal Wear Condition">Minimal Wear Condition</option>
+      <option value="Good Condition">Good Condition</option>
+      <option value="Poor Condition">Poor Condition</option>
+      <option value="Broken / Needs Repair">Broken / Needs Repair</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="productMeasure" class="form-label">Product Unit Of Measure</label>
+    <select class="form-control" id="productMeasure" name="productMeasure">
+      <option value="">Select Measure</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Recreational">Recreational</option>
+      <option value="Literature Related">Literature Related</option>
+      <option value="Decoration">Decoration</option>
+      <option value="Work Gear">Work Gear</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="productPrice" class="form-label">Product Price</label>
+    <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="Product Price">
+  </div>
+
+  <div class="form-group">
+    <label for="productWeight" class="form-label">Product Weight</label>
+    <input type="number" class="form-control" id="productWeight" name="productWeight" placeholder="Product Weight">
+  </div>
+
+  <div>
+    <button type="button" class="btn btn-primary" onclick="saveProduct()">Save</button>
+  </div>
+
+  <!-- JSON Output Section - Andy Wang -->
+  <div id="jsonOutput" class="mt-4"></div>
+</form>
+
+<!-- Additional form to fetch product by ID -->
+<form id="fetchProductForm" class="w-50 mx-auto mt-5">
+  <h3>Fetch Product by ID</h3>
+  <div class="form-group">
+    <label for="fetchProductID" class="form-label">Enter Product ID to Fetch</label>
+    <input type="number" class="form-control" id="fetchProductID" placeholder="Product ID">
+  </div>
+  <button type="button" class="btn btn-success" onclick="fetchProduct()">Fetch Product</button>
+
+  <!-- Display fetched product details here -->
+  <div id="fetchProductOutput" class="mt-4"></div>
+</form>
+
+<script>
+  // Stores the products
+  let products = [];
+
+  // saveProduct function was created by Joshua Ferrell
+  function saveProduct() {
+    // Get values from form
+    const product = {
+      id: document.getElementById('productID').value,
+      description: document.getElementById('productDescription').value,
+      category: document.getElementById('productCategory').value,
+      measure: document.getElementById('productMeasure').value,
+      price: document.getElementById('productPrice').value,
+      weight: document.getElementById('productWeight').value || "N/A"
+    };
+
+    // Add product to the array
+    products.push(product);
+
+    // Clear form
+    document.getElementById("productForm").reset();
+
+    // JSON display and validation - Andy Wang
+    document.getElementById('jsonOutput').innerHTML = `<pre>${JSON.stringify(product, null, 2)}</pre>`;
+
+    alert("Product saved!");
+    // Use this to check to see if the products were logged successfully
+    console.log(products);
+  }
+
+  // fetchProduct function created by Andy Wang
+  function fetchProduct() {
+    const productID = document.getElementById('fetchProductID').value;
+
+    // Find the product in the array by ID
+    const product = products.find(p => p.id === productID);
+
+    // Display the product details if found, else show not found message
+    if (product) {
+      document.getElementById('fetchProductOutput').innerHTML = `<pre>${JSON.stringify(product, null, 2)}</pre>`;
+    } else {
+      document.getElementById('fetchProductOutput').innerHTML = 'Product not found.';
+    }
+  }
+</script>
+
+</body>
+</html>
