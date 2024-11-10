@@ -13,6 +13,7 @@
 
 <div class="container mt-5">
   <h2 class="text-center">Shopping Cart</h2>
+
   <!-- Product Search and Add Section -->
   <div class="input-group mb-3">
     <input type="text" id="productSearch" class="form-control" placeholder="Search for products...">
@@ -24,24 +25,24 @@
   <!-- Shopping Cart Table -->
   <table class="table table-bordered">
     <thead>
-    <tr>
-      <th>Product ID</th>
-      <th>Product Name</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Total</th>
-      <th>Action</th>
-    </tr>
+      <tr>
+        <th>Product ID</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
     </thead>
     <tbody id="cartTableBody">
-    <!-- Items will be dynamically added here -->
+      <!-- Items will be dynamically added here -->
     </tbody>
     <tfoot>
-    <tr>
-      <td colspan="4" class="text-right"><strong>Total:</strong></td>
-      <td id="grandTotal">$0.00</td>
-      <td></td>
-    </tr>
+      <tr>
+        <td colspan="4" class="text-right"><strong>Total:</strong></td>
+        <td id="grandTotal">$0.00</td>
+        <td></td>
+      </tr>
     </tfoot>
   </table>
 
@@ -49,40 +50,43 @@
   <button id="checkout" class="btn btn-success">Checkout</button>
 
   <!-- JSON Display -->
-  <h4 class="mt-4"></h4>
+  <h4 class="mt-4">Cart JSON</h4>
   <pre id="jsonOutput"></pre>
 </div>
 
 <!-- JavaScript for functionality -->
 <script>
-  const products = {
-    "001": { "productName": "Mens Jeans", "price": 59.99 },
-    "004": { "productName": "Womens T-Shirt", "price": 19.99 }
-  };
-
   const cart = [];
 
-  // Add product to the cart
+  // Add product to the cart when the "Add" button is clicked - Andy W
   $('#addProduct').click(function () {
     const productID = $('#productSearch').val();
-    if (products[productID]) {
-      addToCart(productID);
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const product = products.find(p => p.id === productID);
+
+    if (product) {
+      addToCart(product);
     } else {
       alert("Product not found!");
     }
   });
 
-  function addToCart(productID) {
-    const product = products[productID];
-    const existingProduct = cart.find(item => item.productId === productID);
+  function addToCart(product) {
+    const existingProduct = cart.find(item => item.productId === product.id);
 
-    if (existingProduct) {
+    if (existingProduct) { // Andy Wang: If the product is already in the cart, update the quantity
       existingProduct.quantity++;
+      existingProduct.price = parseFloat(product.price);
     } else {
-      cart.push({ productId: productID, productName: product.productName, price: product.price, quantity: 1 });
+      cart.push({
+        productId: product.id,
+        productName: product.description,
+        price: parseFloat(product.price),
+        quantity: 1
+      });
     }
 
-    renderCart();
+    renderCart(); // Andy Wang: Re-render the cart after updating
   }
 
   function renderCart() {
@@ -93,38 +97,38 @@
       const total = item.price * item.quantity;
       grandTotal += total;
 
+      // Andy Wang: Append each item to the cart table
       $('#cartTableBody').append(`
-                <tr>
-                    <td>${item.productId}</td>
-                    <td>${item.productName}</td>
-                    <td>$${item.price.toFixed(2)}</td>
-                    <td><input type="number" value="${item.quantity}" min="1" data-index="${index}" class="quantity"></td>
-                    <td>$${total.toFixed(2)}</td>
-                    <td><button class="btn btn-danger btn-sm remove" data-index="${index}">Remove</button></td>
-                </tr>
-            `);
+        <tr>
+          <td>${item.productId}</td>
+          <td>${item.productName}</td>
+          <td>$${item.price.toFixed(2)}</td>
+          <td><input type="number" value="${item.quantity}" min="1" data-index="${index}" class="quantity"></td>
+          <td>$${total.toFixed(2)}</td>
+          <td><button class="btn btn-danger btn-sm remove" data-index="${index}">Remove</button></td>
+        </tr>
+      `);
     });
 
     $('#grandTotal').text(`$${grandTotal.toFixed(2)}`);
   }
 
-  // Update quantity
+  // Update quantity when the user changes the quantity input - Andy W
   $(document).on('change', '.quantity', function () {
     const index = $(this).data('index');
     cart[index].quantity = parseInt($(this).val());
     renderCart();
   });
 
-  // Remove product from cart
+  // Remove product from the cart when the "Remove" button is clicked - Andy W
   $(document).on('click', '.remove', function () {
     const index = $(this).data('index');
     cart.splice(index, 1);
     renderCart();
   });
 
-  // Display JSON on checkout
+  // Display the cart in JSON format when the checkout button is clicked - Andy W
   $('#checkout').click(function () {
-    // Display the JSON structure of the cart
     $('#jsonOutput').text(JSON.stringify(cart, null, 2));
   });
 </script>

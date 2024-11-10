@@ -8,18 +8,19 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
 <!-- Form body was made by Joshua Ferrell -->
 <form id="productForm" class="w-50 mx-auto">
     <h1 class="text-center mb-4">Product Management Web Page</h1>
 
     <div class="form-group">
         <label for="productID" class="form-label">Product ID</label>
-        <input type="number" class="form-control" id="productID" name="productID" placeholder="productID">
+        <input type="number" class="form-control" id="productID" name="productID" placeholder="Product ID">
     </div>
 
     <div class="form-group">
         <label for="productDescription" class="form-label">Product Description</label>
-        <input type="text" class="form-control" id="productDescription" name="productDescription" placeholder="productDescription">
+        <input type="text" class="form-control" id="productDescription" name="productDescription" placeholder="Product Description">
     </div>
 
     <div class="form-group">
@@ -48,12 +49,12 @@
 
     <div class="form-group">
         <label for="productPrice" class="form-label">Product Price</label>
-        <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="productPrice">
+        <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="Product Price">
     </div>
 
     <div class="form-group">
         <label for="productWeight" class="form-label">Product Weight</label>
-        <input type="number" class="form-control" id="productWeight" name="productWeight" placeholder="productWeight">
+        <input type="number" class="form-control" id="productWeight" name="productWeight" placeholder="Product Weight">
     </div>
 
     <div>
@@ -65,10 +66,7 @@
 </form>
 
 <script>
-    // Stores the products
-    let products = [];
-
-    // saveProduct function was created by Joshua Ferrell
+    // Save product to localStorage
     function saveProduct() {
         // Get values from form
         const product = {
@@ -77,20 +75,26 @@
             category: document.getElementById('productCategory').value,
             measure: document.getElementById('productMeasure').value,
             price: document.getElementById('productPrice').value,
-            weight: document.getElementById('productWeight').value || "N/A"
+            weight: document.getElementById('productWeight').value || "N/A",
+            instanceID: new Date().getTime() // Unique instanceID based on timestamp
         };
 
-        // Add product to the array
+        // Get existing products from localStorage or initialize empty array
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+
+        // Add new product to products array
         products.push(product);
+
+        // Save updated products array back to localStorage
+        localStorage.setItem('products', JSON.stringify(products));
 
         // Clear form
         document.getElementById("productForm").reset();
 
-        // JSON display and validation - Andy Wang
+        // Display JSON for validation
         document.getElementById('jsonOutput').innerHTML = `<pre>${JSON.stringify(product, null, 2)}</pre>`;
 
         alert("Product saved!");
-        // Use this to check to see if the products were logged successfully
         console.log(products);
     }
 </script>
