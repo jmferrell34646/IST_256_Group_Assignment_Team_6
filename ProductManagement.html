@@ -58,15 +58,37 @@
     </div>
 
     <div>
-        <button type="button" onclick="saveProduct()">Save</button>
+        <button type="button" class="btn btn-primary" onclick="saveProduct()">Save</button>
     </div>
+
 
     <!-- JSON Output Section - Andy Wang -->
     <div id="jsonOutput" class="mt-4"></div>
 </form>
 
+<!-- Fetch Product Form was done by Thierry Duperval-->
+<form id="fetchProductForm" class="w-50 mx-auto mt-5">
+    <h3>Fetch Product by ID</h3>
+    <div class="form-group">
+        <label for="fetchProductID" class="form-label">Enter Product ID to Fetch</label>
+        <input type="number" class="form-control" id="fetchProductID" placeholder="Product ID">
+    </div>
+    <button type="button" class="btn btn-success" onclick="fetchProduct()">Fetch Product</button>
+
+
+    <div id="fetchProductOutput" class="mt-4"></div>
+</form>
+
+<form id="shoppingCartButton" class ="w-50 mx-auto mt-5">
+    <button type="button" class="btn btn-success" onclick="window.location.href='ShoppingCart.html'">Go to Shopping Cart</button>
+</form>
+
+
 <script>
-    // Save product to localStorage
+    // Stores the products
+    let products = [];
+
+    // saveProduct function was created by Joshua Ferrell
     function saveProduct() {
         // Get values from form
         const product = {
@@ -75,29 +97,38 @@
             category: document.getElementById('productCategory').value,
             measure: document.getElementById('productMeasure').value,
             price: document.getElementById('productPrice').value,
-            weight: document.getElementById('productWeight').value || "N/A",
-            instanceID: new Date().getTime() // Unique instanceID based on timestamp
+            weight: document.getElementById('productWeight').value || "N/A"
         };
 
-        // Get existing products from localStorage or initialize empty array
-        let products = JSON.parse(localStorage.getItem('products')) || [];
-
-        // Add new product to products array
+        // Add product to the products array
         products.push(product);
 
-        // Save updated products array back to localStorage
+        // Save products array to localStorage
         localStorage.setItem('products', JSON.stringify(products));
 
-        // Clear form
+        // Clear form and display confirmation
         document.getElementById("productForm").reset();
-
-        // Display JSON for validation
         document.getElementById('jsonOutput').innerHTML = `<pre>${JSON.stringify(product, null, 2)}</pre>`;
-
         alert("Product saved!");
-        console.log(products);
+    }
+
+
+    // fetchProduct function created by Andy Wang
+    function fetchProduct() {
+        const productID = document.getElementById('fetchProductID').value;
+
+        // Find the product in the array by ID
+        const product = products.find(p => p.id === productID);
+
+        // Display the product details if found, else show not found message
+        if (product) {
+            document.getElementById('fetchProductOutput').innerHTML = `<pre>${JSON.stringify(product, null, 2)}</pre>`;
+        } else {
+            document.getElementById('fetchProductOutput').innerHTML = 'Product not found.';
+        }
     }
 </script>
 
 </body>
 </html>
+
