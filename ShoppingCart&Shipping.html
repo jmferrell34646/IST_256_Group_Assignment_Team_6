@@ -1,5 +1,6 @@
 <!-- Angular Implementation made by Andy -->
 <!-- Button and form creation by Thierry -->
+<!-- Submission and entry validation developed by Joshua-->
 <html lang="en" ng-app="shoppingApp">
 <head>
     <meta charset="UTF-8">
@@ -32,6 +33,9 @@
         }
         .hidden {
             display: none; /* Hide JSON until form is submitted */
+        }
+        .is-valid {
+            border-color: #198754;
         }
     </style>
 </head>
@@ -81,7 +85,8 @@
         </div>
         <div class="mb-3">
             <label for="carrier" class="form-label">Shipping Carrier</label>
-            <select id="carrier" class="form-control" ng-model="shipping.carrier">
+            <select id="carrier" class="form-control" ng-model="shipping.carrier" required>
+                <option value="">Select Carrier</option>
                 <option value="FedEx">FedEx</option>
                 <option value="UPS">UPS</option>
                 <option value="DHL">DHL</option>
@@ -89,13 +94,14 @@
         </div>
         <div class="mb-3">
             <label for="method" class="form-label">Shipping Method</label>
-            <select id="method" class="form-control" ng-model="shipping.method">
+            <select id="method" class="form-control" ng-model="shipping.method" required>
+                <option value="">Select Shipping Method</option>
                 <option value="Overnight">Overnight</option>
                 <option value="2nd Day">2nd Day</option>
                 <option value="Ground">Ground</option>
             </select>
         </div>
-        <button type="submit" class="btn btn-success">Submit Shipping Address</button>
+        <button type="submit" class="btn btn-success" ng-disabled="!isShippingFormValid()">Submit Shipping Address</button>
     </form>
 </div>
 
@@ -125,27 +131,31 @@
                 }
             };
 
-            // Combine cart and shipping data
-            $scope.$watchGroup(['cartItems', 'shipping'], function () {
-                $scope.combinedData = {
-                    cart: $scope.cartItems,
-                    shipping: $scope.shipping
-                };
-            });
+            // Check if shipping form is valid
+            $scope.isShippingFormValid = function() {
+                const { destination, city, state, zip, carrier, method } = $scope.shipping;
+                return destination && city && state && zip && carrier && method;
+            };
 
             // Submit shipping form
             $scope.submitShippingForm = function() {
-                if ($scope.shipping.destination && $scope.shipping.city && $scope.shipping.state && $scope.shipping.zip) {
+                if ($scope.isShippingFormValid()) {
                     alert('Shipping address submitted successfully!');
                     $scope.jsonVisible = true; // Display JSON after form submission
                 } else {
                     alert('Please fill out all shipping address fields.');
                 }
             };
+
+            // Combine cart and shipping data for JSON display
+            $scope.$watchGroup(['cartItems', 'shipping'], function () {
+                $scope.combinedData = {
+                    cart: $scope.cartItems,
+                    shipping: $scope.shipping
+                };
+            });
         });
 </script>
 
 </body>
 </html>
-
-
