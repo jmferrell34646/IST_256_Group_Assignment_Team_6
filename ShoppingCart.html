@@ -53,14 +53,28 @@
   <h4 class="mt-4">Cart JSON</h4>
   <pre id="jsonOutput"></pre>
 
+  <h3>Click Here To Go To Shipping!</h3>
+  <button type="button" style="background-color: mediumpurple; margin-bottom: 50px;" onclick="goToShipping()">Go to Shipping
+  </button>
+
   <!-- Button and Navigation: Joshua-->
   <h3>Click Here To Go Back To Product Management!</h3>
   <button type="button" style="background-color: orange" onclick="window.location.href='ProductManagement.html'">Go to Product Management</button>
+
+
 
 </div>
 
 <!-- JavaScript for functionality -->
 <script>
+  function goToShipping() {
+    // Save cart data to localStorage
+    const cartData = JSON.stringify(cart); // `cart` contains the shopping cart items
+    localStorage.setItem('cartData', cartData);
+
+    // Redirect to the shipping page
+    window.location.href = 'ShoppingCart&Shipping.html';
+  }
   const cart = [];
 
   // Add product to the cart when the "Add" button is clicked - Andy W
@@ -79,19 +93,18 @@
   function addToCart(product) {
     const existingProduct = cart.find(item => item.productId === product.id);
 
-    if (existingProduct) { // Andy Wang: If the product is already in the cart, update the quantity
+    if (existingProduct) {
       existingProduct.quantity++;
-      existingProduct.price = parseFloat(product.price);
     } else {
       cart.push({
         productId: product.id,
-        productName: product.description,
+        description: product.description, // Map to description
         price: parseFloat(product.price),
         quantity: 1
       });
     }
 
-    renderCart(); // Andy Wang: Re-render the cart after updating
+    renderCart();
   }
 
   function renderCart() {
@@ -106,7 +119,7 @@
       $('#cartTableBody').append(`
         <tr>
           <td>${item.productId}</td>
-          <td>${item.productName}</td>
+          <td>${item.description}</td>
           <td>$${item.price.toFixed(2)}</td>
           <td><input type="number" value="${item.quantity}" min="1" data-index="${index}" class="quantity"></td>
           <td>$${total.toFixed(2)}</td>
