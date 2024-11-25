@@ -1,0 +1,30 @@
+<!-- Returns Page - Developed by Thierry-->
+<html>
+<head>
+  <title>Handle Returns</title>
+  <!-- Cloud Bootstrap Link -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Cloud jQuery Link -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Cloud AngularJS Link -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Product Returns</h1>
+  <form id="returnForm">
+    <div class="form-group">
+      <label for="productId">Product ID</label>
+      <input type="text" class="form-control" id="productId" placeholder="Enter Product ID">
+    </div>
+    <div class="form-group">
+      <label for="returnReason">Return Reason</label>
+      <textarea class="form-control" id="returnReason" placeholder="Enter reason for return"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="submitReturn()">Submit Return</button>
+  </form>
+  <!-- Display JSON Response -->
+  <div id="response"></div>
+</div>
+</body>
+</html>
