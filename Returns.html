@@ -12,7 +12,7 @@
 <body>
 <div class="container">
   <h1>Product Returns</h1>
-  <form id="returnForm">
+  <form id="returnForm" onsubmit="return false;">
     <div class="form-group">
       <label for="productId">Product ID</label>
       <input type="text" class="form-control" id="productId" placeholder="Enter Product ID">
@@ -24,7 +24,32 @@
     <button type="submit" class="btn btn-primary" onclick="submitReturn()">Submit Return</button>
   </form>
   <!-- Display JSON Response -->
-  <div id="response"></div>
+  <div id="response" class="mt-4 p-3 border"></div>
 </div>
+
+<script>
+  // JSON submission done by Joshua
+  function submitReturn() {
+    // Get form values
+    const productId = document.getElementById('productId').value;
+    const returnReason = document.getElementById('returnReason').value;
+    if (!productId || !returnReason) {
+      document.getElementById('response').innerHTML = '<p class="text-danger">Please fill out all fields.</p>';
+      return;
+    }
+    const response = {
+      data: {
+        productId: productId,
+        returnReason: returnReason
+      }
+    };
+
+    // Display the JSON response
+    document.getElementById('response').innerHTML = `
+      <h5>Response:</h5>
+      <pre>${JSON.stringify(response, null, 2)}</pre>
+    `;
+  }
+</script>
 </body>
 </html>
